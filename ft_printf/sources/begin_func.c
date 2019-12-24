@@ -6,7 +6,7 @@
 /*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 13:50:31 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/21 13:47:46 by acthulhu         ###   ########.fr       */
+/*   Updated: 2019/12/24 14:11:15 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ void	begin_func(t_parse *storage, va_list *arg)
 	{
 		if (*storage->format_ptr != '%')
 		{
-			ft_printer(storage);
-			storage->box[storage->string_length] = *storage->format_ptr;
-			storage->string_length++;
+			move_to_print(storage, *storage->format_ptr);
 			storage->format_ptr++;
 			continue ;
 		}

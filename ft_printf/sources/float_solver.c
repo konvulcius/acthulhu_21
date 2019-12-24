@@ -6,7 +6,7 @@
 /*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/21 01:21:49 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/23 22:23:47 by acthulhu         ###   ########.fr       */
+/*   Updated: 2019/12/24 13:51:37 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	float_handler(t_parse *storage, t_double *imagine)
 	container.exp_2 = imagine->notion.exp - 16383;
 	if (container.exp_2 < 0)
 	{
-		handle_tail(imagine, &container);
+		handle_large_tail(imagine, &container);
 		if (container.exp_10 == 0)
-			container.exp_10 = find_start(container.full_number) * -1;
+			container.exp_10 = 1;
 	}
-	if (container.exp_2 >= 0)
+	else if (container.exp_2 >= 0)
 	{
 		handle_entire(imagine, &container);
-		handle_tail(imagine, &container);
+		handle_small_tail(imagine, &container);
 	}
 	for (int i = 0; i < 40; i++)
 	{
@@ -51,61 +51,6 @@ void	float_handler(t_parse *storage, t_double *imagine)
 	// 	handle_e(storage, &container);
 	// else if (ft_toupper(storage->format_ptr[storage->specfr_len]) == 'g')
 	// 	handle_g(storage, &container);
-}
-
-void	handle_entire(t_double *imagine, t_float_point *container)
-{
-	char	current_value[DOUBLE_LEN];
-
-	ft_bzero(current_value, DOUBLE_LEN);
-	current_value[DOUBLE_LEN - 1] = 1;
-	container->exp_10 = ft_arithm_multiplication(current_value, \
-		container->exp_2, container->exp_2, 2);
-	ft_string_sum(container->full_number, current_value, container->exp_10);
-	container->last_exp = container->exp_2;
-	while (container->exp_2 >= 0 && imagine->notion.mant)
-	{
-		--container->exp_2;
-		if (!(imagine->notion.mant >> 63))
-		{
-			imagine->notion.mant = imagine->notion.mant << 1;
-			continue ;
-		}
-		ft_arithm_division(current_value, DOUBLE_LEN - container->exp_10, \
-			container->last_exp - container->exp_2);
-		container->last_exp = container->exp_2;
-		imagine->notion.mant = imagine->notion.mant << 1;
-		ft_string_sum(container->full_number, current_value, container->exp_10);
-	}
-}
-
-void	handle_tail(t_double *imagine, t_float_point *container)
-{
-	char	current_value[DOUBLE_LEN];
-
-	container->exp_2 *= -1;
-	ft_bzero(current_value, DOUBLE_LEN);
-	current_value[DOUBLE_LEN - 1] = 1;
-	// ft_arithm_multiplication(current_value, container->exp_2, container->exp_2, 5);
-	// ft_string_sum(container->full_number, current_value, container->exp_2);
-	// container->last_exp = container->exp_2;
-	while (imagine->notion.mant)
-	{
-		//++container->exp_2;
-		if (!(imagine->notion.mant >> 63))
-		{
-			imagine->notion.mant = imagine->notion.mant << 1;
-			++container->exp_2;
-			continue ;
-		}
-		ft_arithm_multiplication(current_value, \
-			container->exp_2 - container->last_exp, container->exp_2, 5);
-		container->last_exp = container->exp_2;
-		imagine->notion.mant = imagine->notion.mant << 1;
-		++container->exp_2;
-		ft_string_sum(container->full_number, current_value, \
-			container->exp_10 + container->exp_2);
-	}
 }
 
 void	float_solver(t_parse *storage, va_list *arg)
