@@ -1,0 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unsigned_solver.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/19 12:57:17 by acthulhu          #+#    #+#             */
+/*   Updated: 2019/12/21 00:02:33 by acthulhu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_printf.h"
+
+void	unsigned_solver(t_parse *storage, va_list *arg)
+{
+	if (storage->format_ptr[storage->specfr_len] == 'u')
+		handle_u(storage, arg);
+	else if (storage->format_ptr[storage->specfr_len] == 'p')
+		handle_p(storage, arg);
+	else if (storage->format_ptr[storage->specfr_len] == 'o')
+		handle_octet(storage, arg);
+	else if (storage->format_ptr[storage->specfr_len] == 'x' || \
+		storage->format_ptr[storage->specfr_len] == 'X')
+		handle_hex(storage, arg);
+}
