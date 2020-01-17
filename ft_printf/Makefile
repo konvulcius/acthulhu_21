@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+         #
+#    By: yar <yar@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/08 14:43:40 by acthulhu          #+#    #+#              #
-#    Updated: 2019/12/23 21:18:35 by acthulhu         ###   ########.fr        #
+#    Updated: 2019/12/25 22:19:42 by yar              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SOURCE_FILES = begin_func.c \
 			flag_cleaner.c \
 			float_solver.c \
 			float_solver_2.c \
+			float_solver_3.c \
 			handle_signed_string.c \
 			handle_precision.c \
 			handle_unsigned.c \
@@ -69,11 +70,7 @@ HEADERS_DIRECTORY = ./includes/
 HEADER_FILES = libft.h get_next_line.h ft_printf.h
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADER_FILES))
 
-LIBFT_SOURCE = libft.a
-LIBFT_DIRECTORY = ./libft/
-LIBFT = $(addprefix $(LIBFT_DIRECTORY), $(LIBFT_SOURCE))
-
-CC = gcc
+CC = clang #gcc
 
 FLAGS = -g #-Wall -Wextra -Werror # Не забудб про GGGGG
 
