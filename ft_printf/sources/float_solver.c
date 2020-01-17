@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   float_solver.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: yar <yar@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/21 01:21:49 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/24 13:51:37 by acthulhu         ###   ########.fr       */
+/*   Updated: 2019/12/30 22:28:48 by yar              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	float_handler(t_parse *storage, t_double *imagine)
 {
 	t_float_point	container;
 
-	ft_bzero(container.full_number, DOUBLE_LEN);
+	ft_bzero(container.full_number, MAX_DOUBLE_LEN);
 	container.exp_10 = 0;
 	container.exp_2 = imagine->notion.exp - 16383;
 	if (container.exp_2 < 0)

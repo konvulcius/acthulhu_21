@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: yar <yar@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 19:44:49 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/23 21:05:02 by acthulhu         ###   ########.fr       */
+/*   Updated: 2019/12/30 19:16:42 by yar              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,17 @@
 # include <stdarg.h>
 # include <float.h>
 # include <limits.h>
+# include <string.h> //убрать
+# include <unistd.h> //убрать
+# include <stdlib.h> //убрать
 # include <stdio.h> //Удалить!!!
 
 # define VALID_SP "cspdiouxXfeEgG%n"
 # define VALID_FLAGS "0123456789.* '#+-Llhz"
-# define DOUBLE_LEN 16500
+# define MAX_DOUBLE_LEN 16500
+# define MAX_DIGIT 1000000000
+# define DIGIT_COUNT 9
+# define BUF_LEN (MAX_DOUBLE_LEN / DIGIT_COUNT)
 
 typedef enum		e_image
 {
@@ -79,10 +85,11 @@ typedef union		u_double
 
 typedef struct		s_float_point
 {
-	char			full_number[DOUBLE_LEN];
+	char			full_number[MAX_DOUBLE_LEN];
 	int				exp_10;
 	int				exp_2;
 	int				last_exp;
+	int				current_index;
 }					t_float_point;
 
 /*
@@ -162,11 +169,11 @@ void				handle_hex(t_parse *storage, va_list *arg);
 */
 void				parse_sign_precision(t_parse *storage, t_double *imagine);
 void				float_handler(t_parse *storage, t_double *imagine);
-void				handle_entire(t_double *imagine, t_float_point *container);
-void				handle_tail(t_double *imagine, t_float_point *container);
 void				float_solver(t_parse *storage, va_list *arg);
 int					handle_inf_nan(t_parse *storage, t_double *imagine);
-
+void				handle_entire(t_double *imagine, t_float_point *container);
+void				handle_small_tail(t_double *imagine, t_float_point *container);
+void				handle_large_tail(t_double *imagine, t_float_point *container);
 /* 
 **	flag_cleaner.c
 */

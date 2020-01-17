@@ -3,70 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arithm.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: yar <yar@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 12:46:39 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/23 22:23:47 by acthulhu         ###   ########.fr       */
+/*   Updated: 2019/12/30 22:32:16 by yar              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		ft_arithm_multiplication(char *box, int amount, int pow, int base)
+void	ft_arithm_multiplication(int *box, int pow, int base)
 {
 	int			index;
 	int			rest;
 
 	rest = 0;
-	while (amount--)
+	index = BUF_LEN - 1;
+	while (index >= BUF_LEN - (pow / DIGIT_COUNT + 1))
 	{
-		index = DOUBLE_LEN - 1;
-		while (index >= DOUBLE_LEN - pow)
-		{
-			box[index] *= base;
-			box[index] += rest;
-			if ((rest = box[index] / 10) > 0)
-				box[index] %= 10;
-			index--;
-		}
+		box[index] *= base;
+		box[index] += rest;
+		if ((rest = box[index] / MAX_DIGIT) > 0)
+			box[index] %= MAX_DIGIT;
+		index--;
 	}
-	++index;
-	if (base == 2)
-		index = find_start(box);
-	return (DOUBLE_LEN - index);
 }
 
-void	ft_arithm_division(char *box, int begin, int count)
+void	ft_arithm_division(char *box, int begin)
 {
 	int		index;
 	int		rest;
 
-	while (count--)
+	index = begin;
+	while (index < BUF_LEN)
 	{
-		index = begin;
-		while (index < DOUBLE_LEN)
-		{
-			rest = box[index] % 2;
-			box[index] /= 2;
-			box[++index] += rest * 10;
-		}
+		rest = box[index] % 2;
+		box[index] /= 2;
+		box[++index] += rest * MAX_DIGIT;
 	}
 }
 
-void	ft_string_sum(char *box1, const char *box2, int count)
+void	ft_string_sum(int *box1, const int *box2, int count)
 {
 	int		index;
 	int		rest;
 
-	index = DOUBLE_LEN - 1;
+	index = BUF_LEN - 1;
 	while (count >= 0)
 	{
 		box1[count] += box2[index];
-		rest = box1[count] / 10;
+		rest = box1[count] / MAX_DIGIT;
 		if (rest > 0)
 		{
-			box1[count] %= 10;
-			box1[count - 1] += rest;
+			if (count != 0)
+			{
+				box1[count] %= MAX_DIGIT;
+				box1[count - 1] += rest;
+			}
+			else
+			{
+				box1[count + 1] = box1[count] % MAX_DIGIT;
+				box1[count] = rest;
+			}
 		}
 		--count;
 		--index;
