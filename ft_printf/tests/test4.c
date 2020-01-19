@@ -6,7 +6,7 @@
 /*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/16 20:51:11 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/23 22:23:06 by acthulhu         ###   ########.fr       */
+/*   Updated: 2020/01/19 14:17:19 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(void)
 	unsigned long long b = 8809040871136690176;
 	long double f = 123.123123123;
 	
-	printf("%.40f\n", 125.565656);
-	ft_printf("%f\n", 125.565656);
+	printf("%.40f\n", 2.9999);
+	ft_printf("%f\n", 2.9999);
 	return (0);
 }

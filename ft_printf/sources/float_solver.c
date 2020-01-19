@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   float_solver.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yar <yar@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/21 01:21:49 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/30 22:28:48 by yar              ###   ########.fr       */
+/*   Updated: 2020/01/19 12:01:02 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,19 @@ void	float_handler(t_parse *storage, t_double *imagine)
 {
 	t_float_point	container;
 
-	ft_bzero(container.full_number, MAX_DOUBLE_LEN);
+	ft_bzero(container.full_number, BUF_LEN * sizeof(int));
 	container.exp_10 = 0;
 	container.exp_2 = imagine->notion.exp - 16383;
 	if (container.exp_2 < 0)
-	{
 		handle_large_tail(imagine, &container);
-		if (container.exp_10 == 0)
-			container.exp_10 = 1;
-	}
 	else if (container.exp_2 >= 0)
 	{
 		handle_entire(imagine, &container);
 		handle_small_tail(imagine, &container);
 	}
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		move_to_print(storage, container.full_number[i] + 48);
+		ft_putnbr(container.full_number[i]);
 	}
 	// if (storage->format_ptr[storage->specfr_len] == 'f')
 	// 	handle_f(storage, &container);

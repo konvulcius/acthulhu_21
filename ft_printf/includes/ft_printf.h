@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yar <yar@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 19:44:49 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/30 19:16:42 by yar              ###   ########.fr       */
+/*   Updated: 2020/01/19 13:50:09 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ typedef union		u_double
 
 typedef struct		s_float_point
 {
-	char			full_number[MAX_DOUBLE_LEN];
+	int				full_number[BUF_LEN];
+	int				index;
 	int				exp_10;
 	int				exp_2;
 	int				last_exp;
@@ -174,6 +175,8 @@ int					handle_inf_nan(t_parse *storage, t_double *imagine);
 void				handle_entire(t_double *imagine, t_float_point *container);
 void				handle_small_tail(t_double *imagine, t_float_point *container);
 void				handle_large_tail(t_double *imagine, t_float_point *container);
+void				find_int_exp10(t_float_point *container);
+void				find_float_exp10(t_float_point *container);
 /* 
 **	flag_cleaner.c
 */
@@ -197,9 +200,11 @@ void				bad_alloc(void);
 /*
 **	ft_arithm.c
 */
-int					ft_arithm_multiplication(char *box, int amount, int pow, int base);
-void				ft_arithm_division(char *box, int begin, int count);
-void				ft_string_sum(char *box1, const char *box2, int count);
-int					find_start(char *box);
+void				ft_arithm_multiplication(int *box, int pow, int base, \
+						t_float_point *container);
+void				ft_arithm_division(int *box, int begin, int count);
+void				ft_entire_sum(const int *box2, t_float_point *container, int start);
+void				ft_tail_sum(const int *box2, t_float_point *container, int start);
+int					find_start(int *box);
 
 #endif
