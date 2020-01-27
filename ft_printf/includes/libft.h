@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: acthulhu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/08 17:46:47 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/16 13:00:54 by acthulhu         ###   ########.fr       */
+/*   Created: 2020/01/27 12:03:37 by acthulhu          #+#    #+#             */
+/*   Updated: 2020/01/27 12:03:38 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ void				ft_striter(char *s, void (*f)(char*));
 void				ft_striteri(char *s, void (*f)(unsigned int, char*));
 t_btree				*ft_btreenew(void *item, size_t item_size);
 void				ft_delete_two_dimensional(char ***aray, size_t length);
+char				*find_between(const char *s1, const char *s2, int c);
 
 #endif

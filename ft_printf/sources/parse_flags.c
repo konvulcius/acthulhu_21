@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_flags.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: rtory <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/12 19:45:57 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/18 21:44:15 by acthulhu         ###   ########.fr       */
+/*   Created: 2020/01/24 20:56:25 by acthulhu          #+#    #+#             */
+/*   Updated: 2020/01/27 12:22:43 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,80 +14,85 @@
 
 int		validation(t_parse *storage)
 {
-	char			*valid_flags;
 	unsigned int	cur;
 
 	cur = 0;
-	valid_flags = VALID_FLAGS;
 	while (storage->format_ptr[cur] != storage->format_ptr[storage->specfr_len])
 	{
-		if (!ft_strchr(valid_flags, storage->format_ptr[cur]))
+		if (!ft_strchr(VALID_FLAGS, storage->format_ptr[cur]))
 			return (0);
 		cur++;
 	}
 	return (1);
 }
 
-void	parse_flags(t_parse *storage)
+void	parse_flags(t_parse *storage, va_list *arg)
 {
-	char	*temp;
-
-	if (find_between(storage->format_ptr, \
-		&storage->format_ptr[storage->specfr_len], '\''))
-		storage->flags.quote = 1;
-	if (find_between(storage->format_ptr, \
-		&storage->format_ptr[storage->specfr_len], '#'))
-		storage->flags.hash = 1;
-	if (find_between(storage->format_ptr, \
-		&storage->format_ptr[storage->specfr_len], '-'))
-		storage->flags.image = MINUS;
-	else
+	while (storage->current < storage->specfr_len)
 	{
-		temp = find_between(storage->format_ptr, \
-		&storage->format_ptr[storage->specfr_len], '0');
-		if (temp && *(temp - 1) != '.' && *(temp - 1) < '1')
-			storage->flags.image = ZERO;
+		if (storage->format_ptr[storage->current] == '#')
+			storage->flags.hash = 1;
+		else if (storage->format_ptr[storage->current] == '-')
+			storage->flags.image = MINUS;
+		else if (storage->format_ptr[storage->current] == '+')
+			storage->flags.sign = PLUS;
+		else if (storage->format_ptr[storage->current] == '0')
+		{
+			if (storage->flags.image != MINUS)
+				storage->flags.image = ZERO;
+		}
+		else if (storage->format_ptr[storage->current] == ' ')
+		{
+			if (storage->flags.sign != PLUS)
+				storage->flags.sign = SPACE;
+		}
+		else
+			parse_width_precision(storage, arg);
+		storage->current++;
 	}
-	if (find_between(storage->format_ptr, \
-		&storage->format_ptr[storage->specfr_len], '+'))
-		storage->flags.sign = PLUS;
-	else if (find_between(storage->format_ptr, \
-		&storage->format_ptr[storage->specfr_len], ' '))
-		storage->flags.sign = SPACE;
 }
 
 void	parse_width_precision(t_parse *storage, va_list *arg)
 {
-	char	*no_width;
-	int		current;
- 
-	current = 0;
-	no_width = " '#+-0";
-	while (ft_strchr(no_width, storage->format_ptr[current]))
-		current++;
-	if (storage->format_ptr[current] == '*')
+	while (storage->format_ptr[storage->current] != '.' && \
+			storage->current < storage->specfr_len)
 	{
-		storage->width = va_arg(*arg, int);
-		if (storage->width < 0)
+		if (storage->format_ptr[storage->current] == '*')
 		{
-			storage->flags.image = MINUS;
-			storage->width *= -1;
+			storage->width = va_arg(*arg, int);
+			++storage->current;
 		}
+		else if (ft_isdigit(storage->format_ptr[storage->current]))
+		{
+			storage->width = ft_atoi(&storage->format_ptr[storage->current]);
+			while (ft_isdigit(storage->format_ptr[storage->current]))
+				++storage->current;
+		}
+		else
+			break ;
 	}
-	else
-		storage->width = ft_atoi(&storage->format_ptr[current]);
-	parse_precision(storage, arg, find_between(storage->format_ptr, \
-		&storage->format_ptr[storage->specfr_len], '.'));
+	if (storage->format_ptr[storage->current] == '.')
+		parse_precision(storage, arg);
+	else if (storage->width < 0)
+	{
+		storage->flags.image = MINUS;
+		storage->width *= -1;
+	}
 }
 
-void	parse_precision(t_parse *storage, va_list *arg, const char *dot)
+void	parse_precision(t_parse *storage, va_list *arg)
 {
-	if (!dot)
-		return ;
-	if (find_between(dot, &storage->format_ptr[storage->specfr_len], '*'))
+	++storage->current;
+	if (storage->format_ptr[storage->current] == '*')
+	{
 		storage->precision = va_arg(*arg, int);
+		++storage->current;
+	}
 	else
-		storage->precision = ft_atoi(++dot);
-	if (storage->precision < 0)
-		storage->precision *= -1;
+	{
+		storage->precision = ft_atoi(&storage->format_ptr[storage->current]);
+		while (ft_isdigit(storage->format_ptr[storage->current]))
+			++storage->current;
+	}
+	parse_width_precision(storage, arg);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arithm.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: acthulhu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/23 12:46:39 by acthulhu          #+#    #+#             */
-/*   Updated: 2020/01/19 14:17:17 by acthulhu         ###   ########.fr       */
+/*   Created: 2020/01/27 12:06:06 by acthulhu          #+#    #+#             */
+/*   Updated: 2020/01/27 12:06:08 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,6 @@ void	ft_entire_sum(const int *box2, t_float_point *container, int start)
 		rest = container->full_number[start] / MAX_DIGIT;
 		if (rest > 0)
 		{
-			if (start == 0)
-			{
-				container->full_number[start + 1] = \
-					container->full_number[start] % MAX_DIGIT;
-				container->full_number[start] = rest;
-				++container->index;
-				break ;
-			}
 			container->full_number[start] %= MAX_DIGIT;
 			container->full_number[start - 1] += rest;
 		}

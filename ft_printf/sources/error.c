@@ -3,23 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: rtory <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/11 22:55:41 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/13 14:05:20 by acthulhu         ###   ########.fr       */
+/*   Created: 2020/01/24 16:35:25 by acthulhu          #+#    #+#             */
+/*   Updated: 2020/01/27 12:21:55 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	error(t_parse *storage)
+void	error(void)
 {
-	storage->printed = -1;
-	storage->format_ptr = ft_strrchr(storage->format_ptr, '\0');
-}
-
-void	bad_alloc(void)
-{
-	write(1, "Error\n", 6);
+	write(1, "Memory allocation error\n", 24);
 	exit(11);
 }

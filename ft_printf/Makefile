@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yar <yar@student.42.fr>                    +#+  +:+       +#+         #
+#    By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/08 14:43:40 by acthulhu          #+#    #+#              #
-#    Updated: 2019/12/25 22:19:42 by yar              ###   ########.fr        #
+#    Updated: 2020/01/27 12:08:46 by acthulhu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY: all signal clean fclean re
+.PHONY: all clean fclean re
 
 Color_Off='\033[0m'
 
@@ -28,16 +28,21 @@ NAME = libftprintf.a
 SOURCES_DIRECTORY = ./sources/
 SOURCE_FILES = begin_func.c \
 			count_print.c \
-			error.c \
-			find_between.c \
 			flag_cleaner.c \
 			float_solver.c \
 			float_solver_2.c \
-			float_solver_3.c \
+			float_rounding.c \
+			f_string_solver.c \
+			e_string_solver.c \
+			handle_f.c \
+			handle_e.c \
+			handle_g.c \
 			handle_signed_string.c \
+			handle_precision.c \
 			handle_precision.c \
 			handle_unsigned.c \
 			handle_unsigned_string.c \
+			handle_flags.c \
 			ft_arithm.c \
 			ft_printf.c \
 			parse_flags.c \
@@ -45,7 +50,8 @@ SOURCE_FILES = begin_func.c \
 			signed_solver.c \
 			string_char.c \
 			some_to_a.c \
-			unsigned_solver.c  
+			unsigned_solver.c \
+			error.c
 
 LIBFT_DIRECTORY = ./libft/
 LIBFT_SOURCES = ft_btree_add.c ft_btree_search.c ft_btreenew.c \
@@ -58,7 +64,7 @@ LIBFT_SOURCES = ft_btree_add.c ft_btree_search.c ft_btreenew.c \
 		  ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlen.c ft_strmap.c ft_strmapi.c ft_strncat.c ft_strncmp.c ft_strncpy.c \
 		  ft_strnequ.c ft_strnew.c ft_strnstr.c ft_strrchr.c ft_strsplit.c ft_strstr.c ft_strsub.c ft_strtrim.c \
 		  ft_tolower.c ft_toupper.c \
-		  get_next_line.c ft_delete_two_dimensional.c
+		  get_next_line.c ft_delete_two_dimensional.c find_between.c
 
 SOURCES = $(SOURCE_FILES) $(LIBFT_SOURCES)
 
@@ -70,13 +76,13 @@ HEADERS_DIRECTORY = ./includes/
 HEADER_FILES = libft.h get_next_line.h ft_printf.h
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADER_FILES))
 
-CC = clang #gcc
+CC = gcc
 
-FLAGS = -g #-Wall -Wextra -Werror # Не забудб про GGGGG
+FLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME): signal $(OBJECTS)
+$(NAME): $(OBJECTS)
 	@ar -rcs $(NAME) $(OBJECTS)
 	@printf $(BGreen)"SUCCESS!\n"$(Color_Off)
 
@@ -87,9 +93,6 @@ $(OBJECTS_DIRECTORY)%.o: $(SOURCES_DIRECTORY)%.c $(HEADERS)
 
 $(OBJECTS_DIRECTORY)%.o: $(LIBFT_DIRECTORY)%.c $(HEADERS)
 	@$(CC) $(FLAGS) -c $< -o $@ -I $(HEADERS_DIRECTORY)
-
-signal:
-	@printf $(BGreen)"Start compilling...\n"$(Color_Off)
 
 clean:
 	@/bin/rm -rf $(OBJECTS_DIRECTORY)

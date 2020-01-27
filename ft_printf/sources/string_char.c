@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: acthulhu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/13 23:44:21 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/20 23:32:11 by acthulhu         ###   ########.fr       */
+/*   Created: 2020/01/25 10:15:04 by acthulhu          #+#    #+#             */
+/*   Updated: 2020/01/25 10:15:06 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	no_minus(t_parse *storage, char *string, char *elem)
 	int		len;
 
 	len = (int)ft_strlen(string);
-	if (len > storage->precision && storage->precision != -1)
+	if (len > storage->precision && storage->precision > -1)
 		len = storage->precision;
 	if (elem && !*elem)
 		len++;
@@ -62,15 +62,18 @@ void	string_solver(t_parse *storage, va_list *arg, char *elem)
 		if_minus(storage, string, elem);
 	else
 		no_minus(storage, string, elem);
-	storage->format_ptr += ++storage->specfr_len;
 }
 
-void	char_solver(t_parse *storage, va_list *arg)
+void	char_solver(t_parse *storage, va_list *arg, char percent)
 {
 	char	for_print[2];
 	char	elem;
 
-	elem = (char)va_arg(*arg, int);
+	if (arg != NULL)
+		elem = (char)va_arg(*arg, int);
+	else
+		elem = percent;
+	storage->precision = -1;
 	for_print[0] = elem;
 	for_print[1] = '\0';
 	string_solver(storage, NULL, for_print);

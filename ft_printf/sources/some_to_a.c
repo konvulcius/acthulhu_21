@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   some_to_a.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: acthulhu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/18 21:28:43 by acthulhu          #+#    #+#             */
-/*   Updated: 2019/12/23 15:27:45 by acthulhu         ###   ########.fr       */
+/*   Created: 2020/01/27 12:07:08 by acthulhu          #+#    #+#             */
+/*   Updated: 2020/01/27 12:07:10 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,44 +32,46 @@ int		ten_power(long long digit)
 	return (power);
 }
 
-char	*ulltoa_base(unsigned long long  digit, int base)
+char	*ulltoa_base(unsigned long long digit, int base)
 {
 	char		*string;
+	static char	string_box[MAX_LEN_INTEGER];
 	int			size;
 
 	size = base_power(digit, base);
-	if (!(string = ft_strnew(size)))
-		bad_alloc();
+	ft_bzero(string_box, MAX_LEN_INTEGER);
 	while (size--)
 	{
 		if (digit % base <= 9)
-			string[size] = digit % base + 48;
+			string_box[size] = digit % base + 48;
 		else
-			string[size] = digit % base + 87;
+			string_box[size] = digit % base + 87;
 		digit /= base;
 	}
+	string = string_box;
 	return (string);
 }
 
-char	*lltoa(t_parse *storage, long long  digit)
+char	*lltoa(t_parse *storage, long long digit)
 {
 	char		*string;
+	static char	string_box[MAX_LEN_INTEGER];
 	int			size;
 
 	size = ten_power(digit);
-	if (!(string = ft_strnew(size)))
-		bad_alloc();
+	ft_bzero(string_box, MAX_LEN_INTEGER);
 	if (digit < 0)
 	{
 		storage->token = NEGATIVE;
-		if (digit == LLONG_MIN)
-			return (ft_strcpy(string, "9223372036854775808"));
+		if (digit == -LL_MAX - 1LL)
+			return (ft_strcpy(string_box, "9223372036854775808"));
 		digit *= -1;
 	}
 	while (size--)
 	{
-		string[size] = digit % 10 + 48;
+		string_box[size] = digit % 10 + 48;
 		digit /= 10;
 	}
+	string = string_box;
 	return (string);
 }
