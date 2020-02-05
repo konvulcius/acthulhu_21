@@ -6,21 +6,26 @@
 /*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 11:16:34 by acthulhu          #+#    #+#             */
-/*   Updated: 2020/02/01 23:45:37 by acthulhu         ###   ########.fr       */
+/*   Updated: 2020/02/05 14:53:55 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_list	*find_lower(t_list *stack, t_required *values)
+void	find_required(t_list *stack, t_required *values)
 {
+	values->min_a = stack;
+	values->max_a = stack;
 	while (stack)
 	{
-		if (*(long long*)stack->content < values->average)
-			return (stack);
+		if (*(long long*)stack->content < *(long long*)values->min_a->content)
+			values->min_a = stack;
+		if (*(long long*)stack->content > *(long long*)values->max_a->content)
+			values->max_a = stack;
+		if (!stack->next)
+			values->last_a = stack;
 		stack = stack->next;
 	}
-	return (NULL);
 }
 
 t_list	*check_accending_order(t_list *stack)
@@ -36,18 +41,18 @@ t_list	*check_accending_order(t_list *stack)
 		return (NULL);
 }
 
-t_list	*check_descending_order(t_list *stack)
-{
-	if (stack && stack->next)
-	{
-		if (*(long long*)stack->content > *(long long*)stack->next->content)
-			return (check_descending_order(stack->next));
-		else
-			return (stack);
-	}
-	else
-		return (NULL);
-}
+// t_list	*check_descending_order(t_list *stack)
+// {
+// 	if (stack && stack->next)
+// 	{
+// 		if (*(long long*)stack->content > *(long long*)stack->next->content)
+// 			return (check_descending_order(stack->next));
+// 		else
+// 			return (stack);
+// 	}
+// 	else
+// 		return (NULL);
+// }
 
 void	print_stack(t_list *stack)
 {
@@ -62,20 +67,13 @@ void	print_stack(t_list *stack)
 void	stack_checker(t_list **stack_a, t_list **stack_b, t_required *values, \
 			int fd)
 {
-	while ((values->wrong_a = find_lower(*stack_a, values)))
-		a_rolling(stack_a, stack_b, values, fd);
-	while (1)
+	while (*stack_a != values->max_a || (*stack_a)->next != values->min_a || \
+		(*stack_a)->next->next != NULL)
+		first_part(stack_a, stack_b, values, fd);
+	while (*stack_b != NULL)
 	{
-		get_last_value(*stack_a, values, 'a');
-		get_last_value(*stack_b, values, 'b');
-		values->wrong_a = check_accending_order(*stack_a);
-		values->wrong_b = check_descending_order(*stack_b);
-		print_stack(*stack_a);
-		print_stack(*stack_b);
-		if (values->wrong_a || values->wrong_b)
-			both_rolling(stack_a, stack_b, values, fd);
-		else
-			break ;
+		second_part(stack_a, stack_b, values, fd);
+		ft_instruction(stack_a, stack_b, "pa", fd);
 	}
-	only_push_a(stack_a, stack_b, fd);
+	third_part(stack_a, stack_b, values, fd);
 }

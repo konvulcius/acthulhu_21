@@ -9,7 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "/Users/acthulhu/study/push_swap/push_swap",
-			"args": ["2", "1", "4", "5", "6", "23", "1231", "234", "645"],
+			"args": ["123", "121", "543", "23", "0", "78", "434", "-34", "66", "34"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],

@@ -6,7 +6,7 @@
 /*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 22:36:26 by acthulhu          #+#    #+#             */
-/*   Updated: 2020/02/01 23:05:10 by acthulhu         ###   ########.fr       */
+/*   Updated: 2020/02/03 17:36:21 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,15 @@ void		ft_instruction(t_list **stack_a, t_list **stack_b, char *name, int fd)
 	ft_putchar_fd('\n', fd);
 }
 
-void	only_push_a(t_list **stack_a, t_list **stack_b, int fd)
-{
-	while (*stack_b)
-	ft_instruction(stack_a, stack_b, "pa", fd);
-}
+// void	only_push_a(t_list **stack_a, t_list **stack_b, int fd)
+// {
+// 	while (*stack_b)
+// 	ft_instruction(stack_a, stack_b, "pa", fd);
+// }
 
-void	get_last_value(t_list *stack, t_required *values, char a_or_b)
+void	get_b_last(t_list *stack, t_required *values)
 {
 	while (stack->next)
 		stack = stack->next;
-	if (a_or_b == 'a')
-		values->last_a = stack;
-	else
-		values->last_b = stack;
+	values->last_b = stack;
 }

@@ -6,7 +6,7 @@
 /*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 10:08:05 by acthulhu          #+#    #+#             */
-/*   Updated: 2020/02/02 15:38:31 by acthulhu         ###   ########.fr       */
+/*   Updated: 2020/02/03 18:03:16 by acthulhu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,10 @@ typedef struct	s_stacks
 
 typedef struct	s_required
 {
-	long long	average;
 	t_list		*last_a;
 	t_list		*last_b;
-	t_list		*wrong_a;
-	t_list		*wrong_b;
+	t_list		*min_a;
+	t_list		*max_a;
 }				t_required;
 
 /*
@@ -66,25 +65,34 @@ void			check_same(t_list *stack);
 /*
 **		________________________	stack_checker.c	____________________________
 */
-t_list			*find_lower(t_list *stack, t_required *values);
+void			find_required(t_list *stack, t_required *values);
 t_list			*check_accending_order(t_list *stack);
-t_list			*check_descending_order(t_list *stack);
+//t_list			*check_descending_order(t_list *stack);
 void			print_stack(t_list *stack);
 void			stack_checker(t_list **stack_a, t_list **stack_b, \
 					t_required *values, int fd);
 /*
 **		________________________	algorithm.c		____________________________
 */
-void			only_push_a(t_list **stack_a, t_list **stack_b, int fd);
-void			get_last_value(t_list *stack, t_required *values, char a_or_b);
-void			check_rotate(t_list **stack_a, t_list **stack_b, \
+// void			only_push_a(t_list **stack_a, t_list **stack_b, int fd);
+void			get_b_last(t_list *stack, t_required *values);
+void			rotate_action(t_list **stack_a, t_list **stack_b, \
 					t_required *values, int fd);
-void			check_swap(t_list **stack_a, t_list **stack_b, int fd);
-int				find_way(t_list *stack, t_list **wrong);
-void			a_rolling(t_list **stack_a, t_list **stack_b, \
+void			reverse_reverse(t_list **stack_a, t_list **stack_b, \
 					t_required *values, int fd);
-void			both_rolling(t_list **stack_a, t_list **stack_b, \
-					t_required *values, int fd);
+void			swap_action(t_list **stack_a, t_list **stack_b, int fd);
+int				find_way(t_list *stack, t_list *wrong);
+void			first_part(t_list **stack_a, t_list **stack_b, t_required *values, \
+					int fd);
+void			second_part(t_list **stack_a, t_list **stack_b, t_required *values, \
+					int fd);
+void			third_part(t_list **stack_a, t_list **stack_b, t_required *values, \
+					int fd);
+// int				choos_way(t_list *stack_a, t_required *values, t_list **target);
+// void			a_rolling(t_list **stack_a, t_list **stack_b, \
+// 					t_required *values, int fd);
+// void			b_rolling(t_list **stack_a, t_list **stack_b, \
+// 					t_required *values, int fd);
 void			ft_instruction(t_list **stack_a, t_list **stack_b, char *name, \
 					int fd);
 
