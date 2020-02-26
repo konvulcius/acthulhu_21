@@ -1,39 +1,29 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   validation.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/28 12:25:26 by acthulhu          #+#    #+#             */
-/*   Updated: 2020/01/30 21:35:08 by acthulhu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "push_swap.h"
 
 void	instructions_validation(t_list *start)
 {
-	while (start)
+	if (start && !*(char*)start->content)
+		return ;
+	if (!ft_strcmp((char*)start->content, "sa") || \
+		!ft_strcmp((char*)start->content, "sb") || \
+		!ft_strcmp((char*)start->content, "ss") || \
+		!ft_strcmp((char*)start->content, "pa") || \
+		!ft_strcmp((char*)start->content, "pb") || \
+		!ft_strcmp((char*)start->content, "ra") || \
+		!ft_strcmp((char*)start->content, "rb") || \
+		!ft_strcmp((char*)start->content, "rr") || \
+		!ft_strcmp((char*)start->content, "rra") || \
+		!ft_strcmp((char*)start->content, "rrb") || \
+		!ft_strcmp((char*)start->content, "rrr"))
+		return ;
+	else
 	{
-		if (!ft_strcmp((char*)start->content, "sa") || \
-			!ft_strcmp((char*)start->content, "sb") || \
-			!ft_strcmp((char*)start->content, "ss") || \
-			!ft_strcmp((char*)start->content, "pa") || \
-			!ft_strcmp((char*)start->content, "pb") || \
-			!ft_strcmp((char*)start->content, "ra") || \
-			!ft_strcmp((char*)start->content, "rb") || \
-			!ft_strcmp((char*)start->content, "rr") || \
-			!ft_strcmp((char*)start->content, "rra") || \
-			!ft_strcmp((char*)start->content, "rrb") || \
-			!ft_strcmp((char*)start->content, "rrr"))
-			start = start->next;
-		else
-			error();
+		ft_lstdel(&start, content_del);
+		the_error();
 	}
 }
 
-void	only_dig_validation(char *string)
+int		only_dig_validation(char *string)
 {
 	int		count;
 
@@ -43,29 +33,35 @@ void	only_dig_validation(char *string)
 	while (*string)
 	{
 		if (count == 11 || !ft_isdigit(*string++))
-			error();
+			return (0);
 		++count;
 	}
+	if (count == 0)
+		return (0);
+	return (1);
 }
 
-void	digit_compare(t_list *elem)
+int		digit_compare(t_list *elem)
 {
 	if (*(long long*)elem->content > MAXIMAL_INT ||
-		*(long long*)elem->content < MINIMAL_INT)
-		error();
+		*(long long*)elem->content < -MAXIMAL_INT - 1)
+		return (0);
+	return (1);
 }
 
-void	check_same(t_list *stack)
+int		check_same(t_list *stack)
 {
 	t_list	*checker;
 
-	digit_compare(stack);
+	if (!digit_compare(stack))
+		return (0);
 	checker = stack->next;
 	while (checker)
 	{
 		if (ft_memcmp(stack->content, checker->content, \
 				stack->content_size) == 0)
-			error();			
+			return (0);
 		checker = checker->next;
 	}
+	return (1);
 }

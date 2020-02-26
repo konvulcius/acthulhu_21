@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makelib.mk                                         :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/09/08 14:43:40 by acthulhu          #+#    #+#              #
-#    Updated: 2020/02/01 22:53:51 by acthulhu         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 .PHONY: lib_all lib_clean lib_flcean lib_re
 
 Color_Off='\033[0m'
@@ -78,7 +66,7 @@ LIBFT_HEADERS = $(addprefix $(LIBFT_HEADERS_DIRECTORY), $(LIBFT_HEADER_FILES))
 
 CC = gcc
 
-FLAGS = -g -Wall -Wextra -Werror #убрать Г
+FLAGS = -Wall -Wextra -Werror
 
 lib_all: $(NAME)
 
@@ -96,10 +84,10 @@ $(LIBFT_OBJECTS_DIRECTORY)%.o: $(LIBFT_DIRECTORY)%.c $(LIBFT_HEADERS)
 
 lib_clean:
 	@/bin/rm -rf $(LIBFT_OBJECTS_DIRECTORY)
-	@printf $(BRed)"Objects cleaned\n"
+	@printf $(BRed)"Libft's objects cleaned\n"
 
-lib_fclean: clean
+lib_fclean: lib_clean
 	@/bin/rm -f $(NAME)
-	@printf "Binaries have been cleaned\n"$(Color_Off)
+	@printf "Libft's binaries have been cleaned\n"
 
 lib_re: lib_fclean lib_all

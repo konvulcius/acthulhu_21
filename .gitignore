@@ -4,3 +4,5 @@
 ./*/objects/*
 ./*/.vscode/*
 *.dSYM
+.gitignore
+delete_com.sh

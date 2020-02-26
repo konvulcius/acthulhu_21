@@ -1,29 +1,26 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   stack_checker.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/30 11:16:34 by acthulhu          #+#    #+#             */
-/*   Updated: 2020/02/05 14:53:55 by acthulhu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "push_swap.h"
 
-void	find_required(t_list *stack, t_required *values)
+int		find_count(t_list *stack)
 {
-	values->min_a = stack;
-	values->max_a = stack;
+	int		count;
+	t_list	*temp;
+
+	count = 0;
+	temp = stack;
+	while (temp)
+	{
+		++count;
+		temp = temp->next;
+	}
+	return (count);
+}
+
+void	find_last(t_list *stack, t_list **last)
+{
 	while (stack)
 	{
-		if (*(long long*)stack->content < *(long long*)values->min_a->content)
-			values->min_a = stack;
-		if (*(long long*)stack->content > *(long long*)values->max_a->content)
-			values->max_a = stack;
 		if (!stack->next)
-			values->last_a = stack;
+			*last = stack;
 		stack = stack->next;
 	}
 }
@@ -41,39 +38,21 @@ t_list	*check_accending_order(t_list *stack)
 		return (NULL);
 }
 
-// t_list	*check_descending_order(t_list *stack)
-// {
-// 	if (stack && stack->next)
-// 	{
-// 		if (*(long long*)stack->content > *(long long*)stack->next->content)
-// 			return (check_descending_order(stack->next));
-// 		else
-// 			return (stack);
-// 	}
-// 	else
-// 		return (NULL);
-// }
-
-void	print_stack(t_list *stack)
-{
-	while (stack)
-	{
-		ft_printf("%d ", *(long long*)stack->content);
-		stack = stack->next;
-	}
-	ft_printf("\n");
-}
-
 void	stack_checker(t_list **stack_a, t_list **stack_b, t_required *values, \
 			int fd)
 {
-	while (*stack_a != values->max_a || (*stack_a)->next != values->min_a || \
-		(*stack_a)->next->next != NULL)
-		first_part(stack_a, stack_b, values, fd);
-	while (*stack_b != NULL)
+	if (find_count(*stack_a) < 7)
 	{
-		second_part(stack_a, stack_b, values, fd);
-		ft_instruction(stack_a, stack_b, "pa", fd);
+		while (find_count(*stack_a) > 3)
+			ft_instruction(stack_a, stack_b, "pb", fd);
+		simple_solver(stack_a, stack_b, values, fd);
 	}
-	third_part(stack_a, stack_b, values, fd);
+	else
+	{
+		find_max_sequence(*stack_a, values);
+		part_one(stack_a, stack_b, values, fd);
+	}
+	while (*stack_b)
+		part_two(stack_a, stack_b, values, fd);
+	part_three(stack_a, stack_b, fd);
 }

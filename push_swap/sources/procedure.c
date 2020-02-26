@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   procedure.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/28 11:32:19 by acthulhu          #+#    #+#             */
-/*   Updated: 2020/01/30 21:38:55 by acthulhu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "push_swap.h"
 
 void	procedure_swap(t_list **top)
@@ -50,7 +38,7 @@ void	procedure_rotate(t_list **top)
 		last = last->next;
 	*top = temp->next;
 	last->next = temp;
-	temp->next = NULL;	
+	temp->next = NULL;
 }
 
 void	procedure_reverse_rotate(t_list **top)

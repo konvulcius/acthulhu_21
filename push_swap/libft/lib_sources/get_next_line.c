@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: acthulhu <acthulhu@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/26 11:15:43 by acthulhu          #+#    #+#             */
-/*   Updated: 2020/01/29 11:30:30 by acthulhu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
 static char		*ft_add_and_clear(char *s1, char const *s2)
@@ -51,6 +39,8 @@ static int		ft_read(t_box *hand, int fd)
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
+	if (count == 0)
+		hand->status = 0;
 	return (1);
 }
 
@@ -71,13 +61,9 @@ static t_box	*ft_search_or_add(t_box **begin, int fd)
 	if (*begin)
 		(*begin)->prev = slider;
 	slider->next = *begin;
+	slider->status = 1;
 	slider->prev = NULL;
 	slider->content = NULL;
-	if (!(ft_read(slider, fd)))
-	{
-		ft_memdel((void**)&slider);
-		return (NULL);
-	}
 	*begin = slider;
 	return (slider);
 }
@@ -114,7 +100,7 @@ int				get_next_line(const int fd, char **line)
 
 	if (fd < 0 || !line || !(elem = ft_search_or_add(&begin_list, fd)))
 		return (-1);
-	if (!ft_strchr(elem->content, '\n'))
+	if (!elem->content || (elem->status && !ft_strchr(elem->content, '\n')))
 	{
 		if (!ft_read(elem, fd))
 			return (-1);
