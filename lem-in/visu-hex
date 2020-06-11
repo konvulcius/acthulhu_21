@@ -1,0 +1,7 @@
+#!/bin/sh
+
+filename=./.visu-hex.app/Contents/Resources/map.map
+
+awk '{ print  $0 }' > $filename
+
+./.visu-hex.app/Contents/MacOS/visu-hex &
