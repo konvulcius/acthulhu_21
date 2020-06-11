@@ -1,4 +1,4 @@
-.PHONY: all clean fclean re
+.PHONY: all visual clean fclean re
 
 NAME1 = push_swap
 NAME2 = checker
@@ -25,7 +25,8 @@ VISUAL_SRC = parse_attribute.c \
 		visual_interface.c
 
 PUSH_SWAP = push_swap.c $(SOURCE_FILES)
-CHECKER = ps_checker.c $(SOURCE_FILES) $(VISUAL_SRC)
+CHECKER = ps_checker.c $(SOURCE_FILES)
+CHECKER_VS = ps_checker_visual.c $(SOURCE_FILES) $(VISUAL_SRC)
 
 
 OBJECTS_DIRECTORY = ./objects/
@@ -35,6 +36,9 @@ PUSH_SWAP_OBJECTS = $(addprefix $(OBJECTS_DIRECTORY), $(PUSH_SWAP_FILES))
 
 CHECKER_FILES = $(patsubst %.c, %.o, $(CHECKER))
 CHECKER_OBJECTS = $(addprefix $(OBJECTS_DIRECTORY), $(CHECKER_FILES))
+
+CHECKER_VS_FILES = $(patsubst %.c, %.o, $(CHECKER_VS))
+CHECKER_VS_OBJECTS = $(addprefix $(OBJECTS_DIRECTORY), $(CHECKER_VS_FILES))
 
 
 
@@ -61,12 +65,17 @@ $(NAME1): $(PUSH_SWAP_OBJECTS) $(LIBFT)
 	@printf $(BGreen)"push_swap CREATED\n"$(Color_Off)
 
 $(NAME2): $(CHECKER_OBJECTS) $(LIBFT)
-	@$(CC) $(FLAGS) $^ $(LIBFT) -o $(NAME2) -lmlx -framework OpenGL -framework Appkit
+	@$(CC) $(FLAGS) $^ $(LIBFT) -o $(NAME2)
 	@printf $(BGreen)"checker CREATED\n"$(Color_Off)
 
 $(OBJECTS_DIRECTORY)%.o: $(SOURCES_DIRECTORY)%.c $(HEADERS) $(LIBFT_HEADERS)
 	@mkdir -p ./objects
 	@$(CC) $(FLAGS) -c $< -o $@ -I $(HEADERS_DIRECTORY) -I $(LIBFT_HEADERS_DIRECTORY)
+
+visual: $(CHECKER_VS_OBJECTS) $(LIBFT)
+	@rm $(NAME2)
+	@$(CC) $(FLAGS) $^ $(LIBFT) -o $(NAME2) -lmlx -framework OpenGL -framework Appkit
+	@printf $(BGreen)"checker CREATED\n"$(Color_Off)
 
 clean:
 	@/bin/rm -rf $(OBJECTS_DIRECTORY)

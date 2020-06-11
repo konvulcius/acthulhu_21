@@ -35,6 +35,8 @@ int			main(int argc, char **argv)
 		flags.fd = 0;
 	stack_proc = instructions_reader(flags.fd);
 	stack_b = NULL;
+	if (!flags.visual)
+		ft_visual(&stack_a, &stack_b, &stack_proc, flags.fd);
 	procedure_itter(&stack_a, &stack_b, &stack_proc, flags.fd);
 	return (0);
 }

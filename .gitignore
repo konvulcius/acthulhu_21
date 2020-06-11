@@ -6,3 +6,4 @@
 *.dSYM
 .gitignore
 delete_com.sh
+script.sh
